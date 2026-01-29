@@ -8,7 +8,6 @@ struct Planet {
     y: Float,
 }
 
-
 fn orbit(time: Float, distance: Int) -> (Int, Int) {
         adjusted_time := time * 0.2
         distance_f := distance.float()
@@ -19,7 +18,6 @@ fn orbit(time: Float, distance: Int) -> (Int, Int) {
 
 
 mut planets: [Planet; 16]
-
 mut time = 0.0
 
 
@@ -32,6 +30,15 @@ while true {
 
     text(20, 30, "hello", 4)
 
+    for idx, mut planet in planets {
+        planet.x += idx.float() * 0.1
+        planet.y += idx.float() * 0.02
+    }
+
+    // ======= Render =========
+    for idx, planet in planets {
+        circle_fill(planet.x.round(), planet.y.round(), 20, idx)
+    }
     (center_x, center_y) = CENTER
     adjusted_x := center_x + shake.round()
 
@@ -39,9 +46,6 @@ while true {
 
     (planet_x, planet_y) = orbit(time, SMALL_PLANET_RADIUS)
     circle_fill(adjusted_x + planet_x, center_y + planet_y, 6, 29)
-
- 
-    // ======= Render =========
 
     wait_vsync() // display what we rendered and wait
 }
