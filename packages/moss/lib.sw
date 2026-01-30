@@ -1,23 +1,12 @@
 #![api]
 
-const WIDTH = 240
-const HEIGHT = 136
+const WIDTH = 256
+const HEIGHT = 144
 
 external 100 fn wait_vsync()
 external 101 fn set(x: Int, y: Int, palette_index: Int)
 external 102 fn clear(palette_index: Int)
 
-struct Gamepad {
-    up: Bool,
-    down: Bool,
-    left: Bool,
-    right: Bool,
-    a: Bool,
-    b: Bool,
-    start: Bool,
-}
-
-external 103 fn gamepad(player: Int) -> Gamepad
 external 104 fn get(x: Int, y: Int) -> Int
 external 105 fn sprite(x: Int, y: Int, width: Int, colors: [U8])
 external 106 fn box(x: Int, y: Int, width: Int, height: Int, palette_index: Int)
@@ -29,6 +18,8 @@ external 111 fn char(x: Int, y: Int, ch: U8, palette_index: Int)
 external 112 fn text(x: Int, y: Int, text: String, palette_index: Int)
 external 113 fn box_outline(x: Int, y: Int, width: Int, height: Int, palette_index: Int)
 
+external 119 fn sprite_ex(x: Int, y: Int, width: Int, height: Int, colors_offset: Int, colors_stride: Int, colors: [U8])
+external 120 fn tilemap_ex(x: Int, y: Int, grid_width: Int, grid_height: Int, grid_offset: Int, grid_stride: Int, tiles: [U8], colors: [U8])
 
 type Voice = Int // 0 to 7
 type Note = Int // midi-note
@@ -54,11 +45,23 @@ struct SoundDefinition {
     //loops: [(Int, Int)], // sample offsets
 }
 
-external 114 fn sound_mono(id: Int, raw: [U8], sound: SoundDefinition)
-external 115 fn sound_stereo(id: Int, raw: [U8], sound: SoundDefinition)
-external 116 fn note_on(id: Voice, note: Note, sound_id: SoundId, volume: Float)
-external 117 fn note_off(id: Voice)
-external 118 fn pan(id: Voice, pan: Float)
+external 214 fn sound_mono(id: Int, raw: [U8], sound: SoundDefinition)
+external 215 fn sound_stereo(id: Int, raw: [U8], sound: SoundDefinition)
+external 216 fn note_on(id: Voice, note: Note, sound_id: SoundId, volume: Float)
+external 217 fn note_off(id: Voice)
+external 218 fn pan(id: Voice, pan: Float)
+
+struct Gamepad {
+    up: Bool,
+    down: Bool,
+    left: Bool,
+    right: Bool,
+    a: Bool,
+    b: Bool,
+    start: Bool,
+}
+
+external 303 fn gamepad(player: Int) -> Gamepad
 
 // ============= Marsh Net =============
 struct Net {
