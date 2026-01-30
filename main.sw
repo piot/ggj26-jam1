@@ -10,6 +10,7 @@ struct Planet {
 
 const SKELETON = #include[skel2.bin]
 const FLAME = #include[flame.bin]
+const TILEMAP = #include[tilemap.bin]
 
 fn orbit(time: Float, distance: Int) -> (Int, Int) {
         adjusted_time := time * 0.2
@@ -28,7 +29,7 @@ mut x_direction = 1
 mut tick = 0
 
 while true {
-    clear(0)
+    clear(3)
     time += 0.01
     tick += 1
     shake := (time * 20.0).sin() * 2.2
@@ -44,7 +45,7 @@ while true {
 
     // Skeleton hover
     x += x_direction
-    x = 
+    x =
     | x > 80 -> {
         x_direction = -x_direction
         80
@@ -61,16 +62,40 @@ while true {
     //sprite(x, 66, 32, SKELETON)
 
     i := (tick / 4) % 6
-    
-    sprite_ex(x, 10, 32, 32, i * 32, 192, FLAME)
-    //sprite(x, 66, 192, FLAME)
 
-    tiles : [U8; 4] = [
-        0x01, 0x00, 0x03, 0x04,
-        0x01, 0x00, 0x03, 0x04,
+    sprite_ex(x, 10, 32, 32, i * 32, 192, FLAME)
+    sprite(x, 100, 192, FLAME)
+
+    tiles : [U8; 8] = [
+        0x01, 0x02, 0x03, 0x04,
+        0x05, 27, 28, 29,
         ]
 
-    tilemap_ex(20, 20, 4, 2,  0,  4, tiles, FLAME)
+    info := TilemapExParams {
+        tile_size: 8,
+        tile_offset: 0,
+        tile_stride: 4,
+        colors_offset: 0,
+        colors_width: 216,
+    }
+
+    tilemap_ex(20, 20, 4, 2, info, tiles, TILEMAP)
+
+
+    flame_tiles : [U8; 8] = [
+        0x01, 0x02, 0x03,
+        0x05, 0x05, 0x05,
+    ]
+
+    flame_info := TilemapExParams {
+        tile_size: 32,
+        tile_offset: 0,
+        tile_stride: 3,
+        colors_offset: 0,
+        colors_width: 192,
+    }
+
+    tilemap_ex(20, 20, 3, 2, flame_info, flame_tiles, FLAME)
 
     // ======= Render =========
     for idx, planet in planets {

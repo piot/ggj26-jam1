@@ -19,7 +19,16 @@ external 112 fn text(x: Int, y: Int, text: String, palette_index: Int)
 external 113 fn box_outline(x: Int, y: Int, width: Int, height: Int, palette_index: Int)
 
 external 119 fn sprite_ex(x: Int, y: Int, width: Int, height: Int, colors_offset: Int, colors_stride: Int, colors: [U8])
-external 120 fn tilemap_ex(x: Int, y: Int, grid_width: Int, grid_height: Int, grid_offset: Int, grid_stride: Int, tiles: [U8], colors: [U8])
+
+struct TilemapExParams {
+    tile_size: Int, // Must be 8, 16, 32 or 64
+    tile_offset: Int, // Where to search for the tile id, often 0
+    tile_stride: Int, // how many tiles that are in total for each row
+    colors_offset: Int, // normally 0
+    colors_width: Int, // how many pixels in width in the tilemap
+}
+
+external 120 fn tilemap_ex(x: Int, y: Int, grid_width: Int, grid_height: Int, params: TilemapExParams, tiles: [U8], colors: [U8])
 
 type Voice = Int // 0 to 7
 type Note = Int // midi-note
